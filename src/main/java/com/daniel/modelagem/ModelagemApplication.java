@@ -9,10 +9,15 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.daniel.modelagem.domain.Categoria;
 import com.daniel.modelagem.domain.Cidade;
+import com.daniel.modelagem.domain.Cliente;
+import com.daniel.modelagem.domain.Endereco;
 import com.daniel.modelagem.domain.Estado;
 import com.daniel.modelagem.domain.Produto;
+import com.daniel.modelagem.domain.enums.TipoCliente;
 import com.daniel.modelagem.repositories.CategoriaRepository;
 import com.daniel.modelagem.repositories.CidadeRepository;
+import com.daniel.modelagem.repositories.ClienteRepository;
+import com.daniel.modelagem.repositories.EnderecoRepository;
 import com.daniel.modelagem.repositories.EstadoRepository;
 import com.daniel.modelagem.repositories.ProdutoRepository;
 
@@ -31,6 +36,11 @@ public class ModelagemApplication implements CommandLineRunner{
 	@Autowired
 	private CidadeRepository cidadeRepository;
 	
+	@Autowired
+	private ClienteRepository clienteRepository;
+	
+	@Autowired
+	private EnderecoRepository enderecoRepository;
 	
 	
 	public static void main(String[] args) {
@@ -73,6 +83,18 @@ public class ModelagemApplication implements CommandLineRunner{
 		
 		estadoRepository.saveAll(Arrays.asList(est1,est2));
 		cidadeRepository.saveAll(Arrays.asList(c1,c2,c3));
+		
+		Cliente cli1 = new Cliente(null, "Maria Silva","maria@gmail.com","999",TipoCliente.PESSOAFISICA);
+		cli1.getTelefones().addAll(Arrays.asList("36611452","36625052"));
+		
+		Endereco e1 = new Endereco(null, "Rua Flores","300","Apto 203","Jardim","38220834",cli1,c1);
+		
+		Endereco e2 = new Endereco(null,"Avenida Matos","105","Sala 800","Centro","38777012",cli1,c2);
+		
+		cli1.getEnderecos().addAll(Arrays.asList(e1,e2));
+		
+		clienteRepository.saveAll(Arrays.asList(cli1));
+		enderecoRepository.saveAll(Arrays.asList(e1,e2));
 		
 	}
 	
